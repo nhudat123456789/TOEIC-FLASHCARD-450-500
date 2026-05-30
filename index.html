@@ -2096,15 +2096,15 @@ function buildTestQuestions() {
 
       let questionText, correctText, wrongTexts;
       if (testDirection === 1) {
-        // Hỏi nghĩa tiếng Việt, trả lời tiếng Anh
-        questionText = card.vi;
-        correctText = card.en;
-        wrongTexts = wrongOptions.map(o => o.en);
-      } else {
-        // Hỏi tiếng Anh, trả lời nghĩa tiếng Việt
+        // English → Vietnamese: hỏi tiếng Anh, chọn nghĩa tiếng Việt
         questionText = card.en;
         correctText = card.vi;
         wrongTexts = wrongOptions.map(o => o.vi);
+      } else {
+        // Vietnamese → English: hỏi nghĩa tiếng Việt, chọn tiếng Anh
+        questionText = card.vi;
+        correctText = card.en;
+        wrongTexts = wrongOptions.map(o => o.en);
       }
 
       const options = shuffle([correctText, ...wrongTexts]);
@@ -2132,13 +2132,13 @@ function buildTestQuestions() {
     typingTargets.forEach((card) => {
       let questionText, answerText;
       if (testDirection === 1) {
-        // Hỏi nghĩa tiếng Việt, gõ lại tiếng Anh (ví dụ: "hấp dẫn" -> "appealing")
-        questionText = card.vi;
-        answerText = card.en;
-      } else {
-        // Hỏi tiếng Anh, gõ lại nghĩa tiếng Việt
+        // English → Vietnamese: hỏi tiếng Anh, gõ nghĩa tiếng Việt
         questionText = card.en;
         answerText = card.vi;
+      } else {
+        // Vietnamese → English: hỏi nghĩa tiếng Việt, gõ tiếng Anh
+        questionText = card.vi;
+        answerText = card.en;
       }
 
       questions.push({
@@ -2231,7 +2231,7 @@ function renderTestQuestion() {
     if (typingQuestion) typingQuestion.innerText = q.questionText;
     if (typingHintLabel) {
       typingHintLabel.textContent =
-        testDirection === 1 ? "Nhập Tiếng Anh" : "Nhập nghĩa Tiếng Việt";
+        testDirection === 1 ? "Nhập nghĩa Tiếng Việt" : "Nhập Tiếng Anh";
     }
     if (typingInput) {
       typingInput.value = "";
