@@ -1718,10 +1718,21 @@ function showCard() {
   updateNavButtons();
 }
 
+function prepareTextForSpeech(text) {
+  if (!text) return "";
+  const sep = /[àáạảãâầấậẩẫăằắặẳẵèéẹẻẽêềếệểễìíịỉĩòóọỏõôồốộổỗơờớợởỡùúụủũưừứựửữỳýỵỷỹđ]/i.test(text)
+    ? " hay "
+    : " or ";
+  return String(text)
+    .replace(/\s*\/\s*/g, sep)
+    .replace(/\s+/g, " ")
+    .trim();
+}
+
 function playPronunciation() {
   if (!currentCards.length || currentIndex >= currentCards.length) return;
   const card = currentCards[currentIndex];
-  const textToSpeak = card.en;
+  const textToSpeak = prepareTextForSpeech(card.en);
   if (!textToSpeak) return;
 
   var canSpeak = typeof window.speechSynthesis !== "undefined"
@@ -2313,11 +2324,12 @@ function playCorrectSound() {
 }
 
 function speakWord(text) {
-  if (!text) return;
+  const prepared = prepareTextForSpeech(text);
+  if (!prepared) return;
   try {
     if (window.speechSynthesis && typeof window.speechSynthesis.speak === "function") {
       window.speechSynthesis.cancel();
-      const u = new SpeechSynthesisUtterance(text);
+      const u = new SpeechSynthesisUtterance(prepared);
       u.lang = "en-US";
       u.rate = 0.95;
       window.speechSynthesis.speak(u);
